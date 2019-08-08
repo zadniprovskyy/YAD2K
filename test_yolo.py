@@ -18,8 +18,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     '-m',
     '--model_path',
-    help='path to h5 model file containing body'
-    'of a YOLO_v2 model',
+    help='path to h5 model file containing body of a YOLO_v2 model',
     default='model_data/trained_stage_3_best.h5')
 parser.add_argument(
     '-a',
@@ -57,7 +56,8 @@ parser.add_argument(
 
 def _main(args):
     model_path = os.path.expanduser(args.model_path)
-    assert model_path.endswith('.h5'), 'Keras model must be a .h5 file.'
+    print('model_path', model_path)
+    assert model_path.endswith('.h5')
     anchors_path = os.path.expanduser(args.anchors_path)
     classes_path = os.path.expanduser(args.classes_path)
     test_path = os.path.expanduser(args.test_path)

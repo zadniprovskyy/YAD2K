@@ -62,8 +62,8 @@ def _main(args):
     classes_path = os.path.expanduser(args.classes_path)
     test_path = os.path.expanduser(args.test_path)
     output_path = os.path.expanduser(args.output_path)
-    iou_threshold = os.path.expanduser(args.iou_threshold)
-    score_threshold = os.path.expanduser(args.score_threshold)
+    iou_threshold = 0.3
+    score_threshold = 0.5
 
     if not os.path.exists(output_path):
         print('Creating output path {}'.format(output_path))

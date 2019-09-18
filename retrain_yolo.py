@@ -18,6 +18,10 @@ from yad2k.models.keras_yolo import (preprocess_true_boxes, yolo_body,
                                      yolo_eval, yolo_head, yolo_loss)
 from yad2k.utils.draw_boxes import draw_boxes
 
+# For AWS
+import s3fs
+fs = s3fs.S3FileSystem()
+
 # allow pickle to fix colab error
 # save np.load
 np_load_old = np.load
@@ -93,7 +97,7 @@ def _main(args):
 
 def get_classes(classes_path):
     '''loads the classes'''
-    with open(classes_path) as f:
+    with fs.open(classes_path) as f:
         class_names = f.readlines()
     class_names = [c.strip() for c in class_names]
     return class_names
@@ -101,7 +105,7 @@ def get_classes(classes_path):
 def get_anchors(anchors_path):
     '''loads the anchors from a file'''
     if os.path.isfile(anchors_path):
-        with open(anchors_path) as f:
+        with fs.open(anchors_path) as f:
             anchors = f.readline()
             anchors = [float(x) for x in anchors.split(',')]
             return np.array(anchors).reshape(-1, 2)
@@ -315,7 +319,7 @@ def draw(model_body, class_names, anchors, image_data, image_set='val',
     yolo_outputs = yolo_head(model_body.output, anchors, len(class_names))
     input_image_shape = K.placeholder(shape=(2, ))
     boxes, scores, classes = yolo_eval(
-        yolo_outputs, input_image_shape, score_threshold=0.07, iou_threshold=0)
+        yolo_outputs, input_image_shape, score_threshold=0.07, iou_threshold=0.0)
 
     # Run prediction on overfit image.
     sess = K.get_session()  # TODO: Remove dependence on Tensorflow session.

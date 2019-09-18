@@ -105,7 +105,7 @@ def get_classes(classes_path):
 def get_anchors(anchors_path):
     '''loads the anchors from a file'''
     if os.path.isfile(anchors_path):
-        with fs.open(anchors_path) as f:
+        with open(anchors_path) as f:
             anchors = f.readline()
             anchors = [float(x) for x in anchors.split(',')]
             return np.array(anchors).reshape(-1, 2)
